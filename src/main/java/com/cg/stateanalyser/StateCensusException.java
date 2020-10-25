@@ -5,7 +5,8 @@ public class StateCensusException extends Exception{
     enum Exception_type{
         Census_file_problem,
         Type_incorrect,
-        Delimiter_incorrect;
+        Delimiter_incorrect,
+        Header_incorrect;
     }
 
     Exception_type type;

@@ -46,6 +46,7 @@ public class StateCensusAnalyser {
         }*/
             String[] nextRecord;
             nextRecord = csvReader.readNext();
+            int population, area, density;
 
             while ((nextRecord = csvReader.readNext()) != null) {
                 try {
@@ -57,6 +58,13 @@ public class StateCensusAnalyser {
                     if (Pattern.matches("[0-9]", stateCensus.getPopulation()) || Pattern.matches("[0-9]", stateCensus.getArea()) ||
                             Pattern.matches("[0-9]", stateCensus.getDensity())) {
                         throw new NumberFormatException();
+                    }
+                    population = Integer.parseInt(nextRecord[1].trim());
+
+                    area = Integer.parseInt(nextRecord[2].trim());
+                    density = Integer.parseInt(nextRecord[3].trim());
+                    if(population/area!=density){
+                        throw new StateCensusException("Incorrect header",StateCensusException.Exception_type.Header_incorrect);
                     }
                     stateCensusList.add(stateCensus);
                 } catch (ArrayIndexOutOfBoundsException e) {
