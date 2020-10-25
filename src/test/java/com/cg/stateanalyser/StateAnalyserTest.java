@@ -41,12 +41,22 @@ public class StateAnalyserTest {
         }
     }*/
 
-    @Test
+    /*@Test
     public void givenStateNumber_shouldReturnException() throws CsvValidationException, IOException, StateCensusException {
             StateNumberAnalyser stateNumberAnalyser = new StateNumberAnalyser();
             long noOfEntries = stateNumberAnalyser.loadStateCensus().stream().count();
             Assert.assertEquals(37,noOfEntries);
 
+    }*/
+
+    @Test
+    public void givenStateAnalyser_shouldReturnException() throws CsvValidationException, IOException {
+        try {
+            StateNumberAnalyser stateNumberAnalyser = new StateNumberAnalyser();
+            stateNumberAnalyser.loadStateCensus();
+        }catch (StateCensusException e) {
+            Assert.assertEquals(StateCensusException.Exception_type.Census_file_problem, e.type);
+        }
     }
 
 

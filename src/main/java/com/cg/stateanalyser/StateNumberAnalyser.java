@@ -19,7 +19,7 @@ public class StateNumberAnalyser {
 
     public ArrayList<StateNumber> loadStateCensus() throws IOException, CsvValidationException, StateCensusException {
         try {
-            String CSV_read_file = "F:\\Directory\\State Number.txt";
+            String CSV_read_file = "F:\\Directory\\State1Number.txt";
             Reader reader = Files.newBufferedReader(Paths.get(CSV_read_file), Charset.forName("ISO-8859-1"));
         } catch (IOException e) {
             throw new StateCensusException("Census file error", StateCensusException.Exception_type.Census_file_problem);
