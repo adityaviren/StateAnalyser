@@ -11,17 +11,23 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class StateCensusAnalyser {
 
     public static ArrayList<StateCensus> stateCensusList = new ArrayList<>();
 
     public ArrayList<StateCensus> loadStateCensus() throws IOException, CsvValidationException, StateCensusException {
-        String CSV_read_file = "F:\\Directory\\State Census.txt";
-
-        Reader reader = Files.newBufferedReader(Paths.get(CSV_read_file), Charset.forName("ISO-8859-1"));
-
-        CSVReader csvReader = new CSVReader(reader);
+        try {
+            String CSV_read_file = "F:\\Directory\\State Census.txt";
+            Reader reader = Files.newBufferedReader(Paths.get(CSV_read_file), Charset.forName("ISO-8859-1"));
+        } catch (IOException e) {
+            throw new StateCensusException("Census file error", StateCensusException.Exception_type.Census_file_problem);
+        } finally {
+            String CSV_read_file = "F:\\Directory\\State Census.txt";
+            Reader reader = Files.newBufferedReader(Paths.get(CSV_read_file), Charset.forName("ISO-8859-1"));
+            CSVReader csvReader = new CSVReader(reader);
 
         /*Iterator<String[]> iterator = csvReader.iterator();
 
@@ -38,21 +44,29 @@ public class StateCensusAnalyser {
                 System.out.println("State census incomplete");
             }
         }*/
-        String[] nextRecord;
-        nextRecord = csvReader.readNext();
-        while((nextRecord = csvReader.readNext())!=null) {
-            try {
-                StateCensus stateCensus = new StateCensus();
-                stateCensus.setState(nextRecord[0]);
-                stateCensus.setPopulation(nextRecord[1]);
-                stateCensus.setArea(nextRecord[2]);
-                stateCensus.setDensity(nextRecord[3]);
-                stateCensusList.add(stateCensus);
-            }catch (ArrayIndexOutOfBoundsException e){
-                throw new StateCensusException("StateCensusException", StateCensusException.Exception_type.Census_file_problem);
+            String[] nextRecord;
+            nextRecord = csvReader.readNext();
+
+            while ((nextRecord = csvReader.readNext()) != null) {
+                try {
+                    StateCensus stateCensus = new StateCensus();
+                    stateCensus.setState(nextRecord[0]);
+                    stateCensus.setPopulation(nextRecord[1]);
+                    stateCensus.setArea(nextRecord[2]);
+                    stateCensus.setDensity(nextRecord[3]);
+                    if (Pattern.matches("[0-9]", stateCensus.getPopulation()) || Pattern.matches("[0-9]", stateCensus.getArea()) ||
+                            Pattern.matches("[0-9]", stateCensus.getDensity())) {
+                        throw new NumberFormatException();
+                    }
+                    stateCensusList.add(stateCensus);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    throw new StateCensusException("StateCensusException", StateCensusException.Exception_type.Delimiter_incorrect);
+                } catch (NumberFormatException e) {
+                    throw new StateCensusException("Incorrect type", StateCensusException.Exception_type.Type_incorrect);
+                }
             }
+            return stateCensusList;
         }
-        return stateCensusList;
     }
 
     /*public static void main(String[] args) {

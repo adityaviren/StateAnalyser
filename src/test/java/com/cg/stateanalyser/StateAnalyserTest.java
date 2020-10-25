@@ -36,7 +36,9 @@ public class StateAnalyserTest {
             StateCensusAnalyser stateCensusAnalyser = new StateCensusAnalyser();
             stateCensusAnalyser.loadStateCensus();
         }catch (StateCensusException e) {
-            Assert.assertEquals(StateCensusException.Exception_type.Type_incorrect, e.type);
+            Assert.assertEquals(StateCensusException.Exception_type.Delimiter_incorrect, e.type);
         }
     }
+
+
 }

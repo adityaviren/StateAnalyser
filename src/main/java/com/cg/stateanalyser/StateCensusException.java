@@ -3,7 +3,9 @@ package com.cg.stateanalyser;
 public class StateCensusException extends Exception{
 
     enum Exception_type{
-        Census_file_problem;
+        Census_file_problem,
+        Type_incorrect,
+        Delimiter_incorrect;
     }
 
     Exception_type type;
