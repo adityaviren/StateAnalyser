@@ -55,7 +55,7 @@ public class StateAnalyserTest {
             StateNumberAnalyser stateNumberAnalyser = new StateNumberAnalyser();
             stateNumberAnalyser.loadStateCensus();
         }catch (StateCensusException e) {
-            Assert.assertEquals(StateCensusException.Exception_type.Census_file_problem, e.type);
+            Assert.assertEquals(StateCensusException.Exception_type.Type_incorrect, e.type);
         }
     }
 
